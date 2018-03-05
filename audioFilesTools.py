@@ -15,31 +15,31 @@ def getGenre(filename):
 	test = test.replace("Data/Raw/", "")
 	result = u''.join([i for i in test if not i.isdigit()]) #return string with no directory path or song number
 	print result
-	audiofile.tag.genre = result #assigning genre tag to song
+	#audiofile.tag.genre = result #assigning genre tag to song
 
-	fileGenre = audiofile.tag.genre.name
-
+	fileGenre = audiofile.tag.genre
+        
 
 	#No genre
 	if not audiofile.tag.genre:
 		return None
 		#return audiofile.tag.genre.name.encode('utf-8')
 	else:
-		if("Rock" in fileGenre):
+		if("Rock" in str(fileGenre)):
 			fileGenre = "Rock"
-		if("Instrumental" in fileGenre):
+		if("Instrumental" in str(fileGenre)):
 			fileGenre = "Instrumental"
-		if("Piano" in fileGenre):
+		if("Piano" in str(fileGenre)):
 			fileGenre = "Classical"
-		if("Jazz" in fileGenre):
+		if("Jazz" in str(fileGenre)):
 			fileGenre = "Jazz"
-		if("Electronic" in fileGenre):
+		if("Electronic" in str(fileGenre)):
 			fileGenre = "Electronic"
-		if("Metal" in fileGenre):
+		if("Metal" in str(fileGenre)):
 			fileGenre = "Metal"
-		if("Pop" in fileGenre):
+		if("Pop" in str(fileGenre)):
 			fileGenre = "Pop"
-		if("Hip-Hop" in fileGenre or "Hip Hop" in fileGenre or "hip hop" in fileGenre):
+		if("Hip-Hop" in str(fileGenre) or "Hip Hop" in str(fileGenre) or "hip hop" in str(fileGenre)):
 			fileGenre = "Hip-Hop"
 
-		return fileGenre.encode('utf-8')
+		return fileGenre
