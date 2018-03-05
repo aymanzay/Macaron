@@ -12,6 +12,8 @@ def createModel(nbClasses,imageSize):
 	print("[+] Creating model...")
 	convnet = input_data(shape=[None, imageSize, imageSize, 1], name='input')
 
+	#Add loss function dependent on class sizes 
+
 	convnet = conv_2d(convnet, 64, 2, activation='elu', weights_init="Xavier", name='conv1')
 	convet = batch_normalization(convnet, trainable=True, restore=True)
 	convnet = max_pool_2d(convnet, 2)
@@ -29,10 +31,10 @@ def createModel(nbClasses,imageSize):
 	convnet = max_pool_2d(convnet, 2)
 
 	convnet = fully_connected(convnet, 1024, activation='elu')
-	convnet = dropout(convnet, 0.5)
-
+	convnet = dropout(convnet, 0.4)
+	
 	convnet = fully_connected(convnet, nbClasses, activation='softmax')
-	convnet = regression(convnet, optimizer='rmsprop', loss='categorical_crossentropy')
+	convnet = regression(convnet, optimizer='sgd', loss='categorical_crossentropy')
 
 	model = tflearn.DNN(convnet)
 	print("    Model created! ✅")
