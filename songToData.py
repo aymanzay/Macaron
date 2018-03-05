@@ -61,10 +61,11 @@ def createSpectrogramsFromAudio():
 	for index,filename in enumerate(files):
 		print "Creating spectrogram for file {}/{}...".format(index+1,nbFiles)
 		fileGenre = getGenre(rawDataPath+filename)
-		genresID[fileGenre] = genresID[fileGenre] + 1 if fileGenre in genresID else 1
-		fileID = genresID[fileGenre]
-		newFilename = fileGenre+"_"+str(fileID)
-		createSpectrogram(filename,newFilename)
+		if(fileGenre is not None):
+			genresID[fileGenre] = genresID[fileGenre] + 1 if fileGenre in genresID else 1
+			fileID = genresID[fileGenre]
+			newFilename = fileGenre+"_"+str(fileID)
+			createSpectrogram(filename,newFilename)
 
 #Whole pipeline .mp3 -> .png slices
 def createSlicesFromAudio():

@@ -14,7 +14,7 @@ pixelPerSecond = 50
 sliceSize = 128
 
 #Dataset parameters
-filesPerGenre = 1000
+filesPerGenre = 2000
 validationRatio = 0.3
 testRatio = 0.1
 
