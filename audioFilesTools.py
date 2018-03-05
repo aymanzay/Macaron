@@ -19,27 +19,27 @@ def getGenre(filename):
 
 	fileGenre = audiofile.tag.genre
 
-	
+
 	#No genre
 	if not audiofile.tag.genre:
 		return None
 		#return audiofile.tag.genre.name.encode('utf-8')
 	else:
-		if("Rock" is in fileGenre):
+		if("Rock"  in fileGenre):
 			fileGenre = "Rock"
-		else if("Instrumental" is in fileGenre):
+		else if("Instrumental"  in fileGenre):
 			fileGenre = "Instrumental"
-		else if("Piano" is in fileGenre):
+		else if("Piano"  in fileGenre):
 			fileGenre = "Classical"
-		else if("Jazz" is in fileGenre):
+		else if("Jazz"  in fileGenre):
 			fileGenre = "Jazz"
-		else if("Electronic" is in fileGenre):
+		else if("Electronic"  in fileGenre):
 			fileGenre = "Electronic"
-		else if("Metal" is in fileGenre):
+		else if("Metal"  in fileGenre):
 			fileGenre = "Metal"
-		else if("Pop" is in fileGenre):
+		else if("Pop"  in fileGenre):
 			fileGenre = "Pop"
-		else if("Hip-Hop" is in fileGenre or "Hip Hop" is in fileGenre or "hip hop" is in fileGenre):
+		else if("Hip-Hop" in fileGenre or "Hip Hop" in fileGenre or "hip hop" in fileGenre):
 			fileGenre = "Hip-Hop"
 
 		return fileGenre
