@@ -22,16 +22,17 @@ Python Dependencies:
 
 
 File Structure:
-/Macaron
-	/Predict
-		/Library
-		/Slices
-		/Spectrograms
-    /Data
-		/Raw
-			/Spectrograms
-			/Slices
-				/(list of genres to classify) 
+Macaron
+├── Data
+│   ├── Raw          
+│   ├── Spectrograms         
+│   └── Slices
+│   │	└── # N directories (N = number of genres to classify)      
+├── Predict
+│   ├── Library          
+│   ├── Spectrograms        
+│   └── Slices         
+└── README.md
 
 Commands:
 
