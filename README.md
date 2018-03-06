@@ -23,35 +23,35 @@ Python Dependencies:
 
 File Structure:
 /Macaron
-    /Predict
-      /Library
-      /Slices
-      /Spectrograms
+	/Predict
+		/Library
+		/Slices
+		/Spectrograms
     /Data
-        /Raw
-        /Spectrograms
-        /Slices
-          /(list of genres to classify) 
+		/Raw
+			/Spectrograms
+			/Slices
+				/(list of genres to classify) 
 
 Commands:
 
 Create Spectrogram and Slice pngs:
-  python main.py slice
+	python main.py slice
 
 (wait for it to generate spectrograms and slices into their genre folders)
 
 Train CNN:
-  python main.py train
+	python main.py train
 
 (It will train over the given epoch length in config file)
 
 To classify or graph:
-  python main.py classify
+	python main.py classify
   
 (After classification there is a user option to use python package hypertools to generate a 3D 
 representation of all classified songs)
-input: "graph" to generate, anything else to terminate
+	input: "graph" to generate, anything else to terminate
 
 To predict individual song genre:
-python main.py predict
+	python main.py predict
 
