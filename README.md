@@ -19,6 +19,7 @@ Python Dependencies:
  - Keras
  - Numpy
  - Image
+ - (optional: Hypertools)
 
 
 ## File Structure:
