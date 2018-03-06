@@ -1,11 +1,13 @@
-# Macaron
+https://github.com/mdeff/fma# Macaron
 
 Deep Learning Content-Based Music Recommendation.
 
 This model uses a Convolutional Neural Network (CNN) to classify song genres by utilizing image classification on spectrogram
 representations of songs. The model would output a N-length vector depicting the predictions for each genre on the song based
-on weights loaded from a pretrained model, and use it as input for the k-Nearest Neighbor (kNN) algorithm to produce a playlist of 
-k most similar songs in your library directory.
+on weights loaded from a pretrained model, and use it as input for the k-Nearest Neighbor (kNN) algorithm to produce a playlist of k most similar songs in your library directory.
+
+I train my own model using the fma dataset found here: https://github.com/mdeff/fma
+However, users can use any mp3 or wav file they desire to build their own datasets.
 
 Below are the instructions to run code:
 
