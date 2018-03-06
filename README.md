@@ -21,38 +21,47 @@ Python Dependencies:
  - Image
 
 
-File Structure:
-Macaron
-├── Data
-│   ├── Raw          
-│   ├── Spectrograms         
-│   └── Slices
-│   │	└── # N directories (N = number of genres to classify)      
-├── Predict
-│   ├── Library          
-│   ├── Spectrograms        
-│   └── Slices         
-└── README.md
+## File Structure:
 
-Commands:
+	/Macaron
+		README.md
+		/Data
+			/Raw
+			/Spectrograms
+			/Slices
+				/Genres		#N directories , N = number of genres to classify
+		/Predict
+			/Library
+			/Spectrograms
+			/Slices
 
-Create Spectrogram and Slice pngs:
-	python main.py slice
+## Commands:
 
-(wait for it to generate spectrograms and slices into their genre folders)
+### Create Spectrograms and Slices:
+(Medium wait time: generate spectrograms for all training data, slicing them and inserting them in their genre folders)
+	
+	python main.py slice 
+	
 
-Train CNN:
+### Train CNN:
+(Long wait time: train over the given epoch length in config file)
+
 	python main.py train
 
-(It will train over the given epoch length in config file)
 
-To classify or graph:
+### To classify and/or graph:
+(short-medium wait time: predicting song ID vectors, performing kNN, (optional: graph data))
+
+** Wait time depends on number of songs classified in Predict/Library
+
 	python main.py classify
   
 (After classification there is a user option to use python package hypertools to generate a 3D 
 representation of all classified songs)
+	
 	input: "graph" to generate, anything else to terminate
 
-To predict individual song genre:
+### To predict individual song genre:
+	
 	python main.py predict
 
