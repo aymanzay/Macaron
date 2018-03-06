@@ -16,21 +16,29 @@ def getGenre(filename):
 	test = test.replace("_", "")
 	test = test.replace("Data/Raw/", "")
 	result = u''.join([i for i in test if not i.isdigit()]) #return string with no directory path or song number
-	print result
+	#print result
 	
 	#audiofile.tag.genre = result #assigning genre tag to song
 
-	fileGenre = audiofile.tag.genre.name
-
+	fileGenre = str(audiofile.tag.genre)
+        print fileGenre
+        
 	for n in genreList:
 		if n in fileGenre:
-			return n
+	       	        return n
 		
 	if "Piano" in fileGenre:
-		return genreList[3]
+		return str(genreList[3])
 
 	if "hip hop" in fileGenre or "Hip Hop" in fileGenre:
-		return genreList[2]
+		return str(genreList[2])
+
+        if "step" in fileGenre:
+                return str(genreList[7])
+
+        if "Soundtrack" in fileGenre:
+                return str(genreList[5])
+        
 
 	if None:
 		fileGenre = "x"

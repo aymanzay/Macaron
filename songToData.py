@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from subprocess import Popen, PIPE, STDOUT
 import os
+import os.path
 from PIL import Image
 import eyed3
 
@@ -22,21 +23,17 @@ eyed3.log.setLevel("ERROR")
 
 #Create spectrogram from mp3 files
 def createSpectrogram(filename,newFilename):
-        filename = filename.replace("/", "")
-        newFilename = newFilename.replace("/", "")
-
-        filename = filename.replace("'", "")
-        newFilename = newFilename.replace("'", "")
+        print filename, "and ", newFilename
 
         #check if already existing
-	#if os.path.exists(spectrogramsPath+newFilename):
-	#return
+	if os.path.exists(spectrogramsPath+newFilename):
+	        return
         
 	#Create temporary mono track if needed
 	if isMono(rawDataPath+filename):
-		command = "cp '{}' '/tmp/{}.mp3'".format(rawDataPath+filename,newFilename)
+		command = "cp '{}' '/tmp/{}.wav'".format(rawDataPath+filename,newFilename)
 	else:
-		command = "sox '{}' '/tmp/{}.mp3' remix 1,2".format(rawDataPath+filename,newFilename)
+		command = "sox '{}' '/tmp/{}.wav' remix 1,2".format(rawDataPath+filename,newFilename)
 	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
 	output, errors = p.communicate()
 	if errors:
@@ -44,7 +41,7 @@ def createSpectrogram(filename,newFilename):
 
 	#Create spectrogram
 	filename.replace(".mp3","")
-	command = "sox '/tmp/{}.mp3' -n spectrogram -Y 200 -X {} -m -r -o '{}.png'".format(newFilename,pixelPerSecond,spectrogramsPath+newFilename)
+	command = "sox '/tmp/{}.wav' -n spectrogram -Y 200 -X {} -m -r -o '{}.png'".format(newFilename,pixelPerSecond,spectrogramsPath+newFilename)
 	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
 	output, errors = p.communicate()
 	if errors:
@@ -52,11 +49,11 @@ def createSpectrogram(filename,newFilename):
 
 	#Remove tmp mono track
 	try:
-		os.remove("/tmp/{}.mp3".format(newFilename))
-	except:
+		os.remove("/tmp/{}.wav".format(newFilename))
+	except OSError as exc: # Guard against race condition
+                pass
 
-
-#Creates .png whole spectrograms from mp3 files
+#Creates .png whole spectrograms from mp3 file
 def createSpectrogramsFromAudio():
 	genresID = dict()
 	files = os.listdir(rawDataPath)
@@ -75,11 +72,14 @@ def createSpectrogramsFromAudio():
 	for index, filename in enumerate(files):
 		print "Creating spectrogram for file {}/{}...".format(index+1,nbFiles)
 		fileGenre = getGenre(rawDataPath+filename)
+                #print "fileGenre is ", fileGenre
+
 		if fileGenre in genreList:
+                        #print "yes"
 			genresID[fileGenre] = genresID[fileGenre] + 1 if fileGenre in genresID else 1
 			fileID = genresID[fileGenre]
 			newFilename = str(fileGenre)+"_"+str(fileID)
-		    createSpectrogram(filename,newFilename)
+		        createSpectrogram(filename,newFilename)
 
 #Whole pipeline .mp3 -> .png slices
 def createSlicesFromAudio():
