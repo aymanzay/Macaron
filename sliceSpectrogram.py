@@ -24,7 +24,7 @@ def sliceSpectrogram(filename, desiredSize):
 	width - desiredSize
 
 	#Create path if not existing
-	slicePath = slicesPath+"{}/".format(genre);
+	slicePath = slicesPath+"{}/".format(genre)
 	if not os.path.exists(os.path.dirname(slicePath)):
 		try:
 			os.makedirs(os.path.dirname(slicePath))

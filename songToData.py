@@ -9,6 +9,7 @@ from audioFilesTools import isMono, getGenre
 from config import rawDataPath
 from config import spectrogramsPath
 from config import pixelPerSecond
+from config import genreList
 
 #Tweakable parameters
 desiredSize = 128
@@ -50,7 +51,10 @@ def createSpectrogram(filename,newFilename):
 		print errors
 
 	#Remove tmp mono track
-	#os.remove("/tmp/{}.mp3".format(newFilename))
+	try:
+		os.remove("/tmp/{}.mp3".format(newFilename))
+	except:
+
 
 #Creates .png whole spectrograms from mp3 files
 def createSpectrogramsFromAudio():
@@ -68,17 +72,14 @@ def createSpectrogramsFromAudio():
 				raise
 
 	#Rename files according to genre
-	for index,filename in enumerate(files):
+	for index, filename in enumerate(files):
 		print "Creating spectrogram for file {}/{}...".format(index+1,nbFiles)
 		fileGenre = getGenre(rawDataPath+filename)
-		if(str(fileGenre) is "None"):
-                        continue
-                else:
-	       	        genresID[fileGenre] = genresID[fileGenre] + 1 if fileGenre in genresID else 1
+		if fileGenre in genreList:
+			genresID[fileGenre] = genresID[fileGenre] + 1 if fileGenre in genresID else 1
 			fileID = genresID[fileGenre]
 			newFilename = str(fileGenre)+"_"+str(fileID)
-                        if "None" not in newFilename:
-			        createSpectrogram(filename,newFilename)
+		    createSpectrogram(filename,newFilename)
 
 #Whole pipeline .mp3 -> .png slices
 def createSlicesFromAudio():

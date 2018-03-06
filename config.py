@@ -14,6 +14,7 @@ pixelPerSecond = 50
 sliceSize = 128
 
 #Dataset parameters
+genreList = {"Pop", "Rap", "Hip-Hop", "Classical", "Rock", "Instrumental", "Jazz", "Electronic", "Punk"}
 filesPerGenre = 2000
 validationRatio = 0.3
 testRatio = 0.1

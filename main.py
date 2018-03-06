@@ -18,6 +18,7 @@ from config import filesPerGenre
 from config import nbEpoch
 from config import validationRatio, testRatio
 from config import sliceSize
+from config import genreList
 
 from songToData import createSlicesFromAudio
 from audioFilesTools import isMono
