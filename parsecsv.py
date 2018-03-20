@@ -23,7 +23,7 @@ def getGenre(song):
     audiofile = eyed3.load(song)
 
     search = audiofile.tag.title
-    print "title is ", search
+    print ("title is ", search)
     found = []
 
     for sublist in raw:
@@ -42,8 +42,8 @@ def getGenre(song):
     #dataset = dict(zip(header, data.T))
 
     #print 'track' in dataset
-    return
+#    return
     
 
 
-getGenre('000002.mp3')
+#getGenre('000002.mp3')
