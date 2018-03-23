@@ -197,8 +197,7 @@ def load(filepath):
         tracks = pd.read_csv(filepath, index_col=0, header=[0, 1])
 
         COLUMNS = [('track', 'tags'), ('album', 'tags'), ('artist', 'tags'),
-                   ('track', 'genres'), ('track', 'genres_all'),
-                   ('track', 'genres_top')]
+                   ('track', 'genres'), ('track', 'genres_all')]
         for column in COLUMNS:
             tracks[column] = tracks[column].map(ast.literal_eval)
 
@@ -213,8 +212,9 @@ def load(filepath):
         tracks['set', 'subset'] = tracks['set', 'subset'].astype(
                 'category', categories=SUBSETS, ordered=True)
 
-        COLUMNS = [('track', 'license'), ('artist', 'bio'),
-                   ('album', 'type'), ('album', 'information')]
+        COLUMNS = [('track', 'genre_top'), ('track', 'license'),
+                   ('album', 'type'), ('album', 'information'),
+                   ('artist', 'bio')]
         for column in COLUMNS:
             tracks[column] = tracks[column].astype('category')
 
@@ -222,18 +222,6 @@ def load(filepath):
 
 
 def get_audio_path(audio_dir, track_id):
-    """
-    Return the path to the mp3 given the directory where the audio is stored
-    and the track ID.
-
-    Examples
-    --------
-    >>> import utils
-    >>> AUDIO_DIR = os.environ.get('AUDIO_DIR')
-    >>> utils.get_audio_path(AUDIO_DIR, 2)
-    '../data/fma_small/000/000002.mp3'
-
-    """
     tid_str = '{:06d}'.format(track_id)
     return os.path.join(audio_dir, tid_str[:3], tid_str + '.mp3')
 

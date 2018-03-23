@@ -14,12 +14,12 @@ pixelPerSecond = 50
 sliceSize = 128
 
 #Dataset parameters
-genreList = ["Pop", "Rap", "Hip-Hop", "Classical", "Rock", "Instrumental", "Jazz", "Electronic", "Punk"]
-filesPerGenre = 2000
+genreList = ["Pop", "Experimental", "Hip-Hop", "International", "Rock", "Instrumental", "Electronic", "Folk"]
+filesPerGenre = 5000
 validationRatio = 0.3
 testRatio = 0.1
 
 #Model parameters
-batchSize = 128
+batchSize = 512
 learningRate = 0.001
-nbEpoch = 16
+nbEpoch = 18

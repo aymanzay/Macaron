@@ -57,6 +57,8 @@ nbClasses = len(genres)
 
 #Create model
 model = createModel(nbClasses, sliceSize)
+#test_X, test_y = getDataset(filesPerGenre, genres, sliceSize, validationRatio, testRatio, mode="test")
+#validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(test_X, test_y, every_n_steps=50)
 #model2 = createFCModel(nbClasses, sliceSize)
 
 if "train" in args.mode:

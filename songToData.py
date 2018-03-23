@@ -12,6 +12,29 @@ from config import spectrogramsPath
 from config import pixelPerSecond
 from config import genreList
 
+import csv
+
+raw = []
+file = open('tracks.csv', 'r')
+
+reader = csv.reader(file)
+header = next(reader)
+next(reader)
+next(reader)
+
+for row in reader:
+    raw.append(row)
+
+
+fileGenres = open('genres.csv', 'r')
+Greader = csv.reader(fileGenres)
+
+header = next(Greader)
+#print(header)
+gList = []
+for row in Greader:
+    gList.append(row)
+
 #Tweakable parameters
 desiredSize = 128
 
@@ -35,28 +58,29 @@ def createSpectrogram(filename,newFilename):
         
         #Create temporary mono track if needed
         if isMono(rawDataPath+filename):
-                command = "cp '{}' '/tmp/{}.mp3'".format(rawDataPath+filename,newFilename)
+                command = "cp '{}' '/tmp/{}.wav'".format(rawDataPath+filename,newFilename)
         else:
-                command = "sox '{}' '/tmp/{}.mp3' remix 1,2".format(rawDataPath+filename,newFilename)
+                command = "sox '{}' '/tmp/{}.wav' remix 1,2".format(rawDataPath+filename,newFilename)
         p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
         output, errors = p.communicate()
         if errors:
                 print (errors)
 
+        #print("TEST")
         #Create spectrogram
         filename.replace(".mp3","")
-        command = "sox '/tmp/{}.mp3' -n spectrogram -Y 200 -X {} -m -r -o '{}.png'".format(newFilename,pixelPerSecond,spectrogramsPath+newFilename)
+        command = "sox '/tmp/{}.wav' -n spectrogram -Y 200 -X {} -m -r -o '{}.png'".format(newFilename,pixelPerSecond,spectrogramsPath+newFilename)
         p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
         output, errors = p.communicate()
         if errors:
                 print (errors)
 
         #Remove tmp mono track
-        try:
-                os.remove("/tmp/{}.mp3".format(newFilename))
-        except OSError as exc: # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                        raise
+        #try:
+                #os.remove("/tmp/{}.wav".format(newFilename))
+        #except OSError as exc: # Guard against race condition
+        #        if exc.errno != errno.EEXIST:
+        #                raise
 
 
 #Creates .png whole spectrograms from mp3 files
@@ -75,15 +99,17 @@ def createSpectrogramsFromAudio():
                                 raise
         #Rename files according to genre
         for index, filename in enumerate(files):
-                print ("Creating spectrogram for file {}/{}...".format(index+1,nbFiles))
-                fileGenre = getGenre(rawDataPath+filename)
-                print(type(fileGenre))
-                #if fileGenre in genreList:
+            print ("Creating spectrogram for file {}/{}...".format(index+1,nbFiles))
+            fileGenre = getGenre(raw, gList, rawDataPath+filename)
+            print(fileGenre)
+            if fileGenre is not None:
                 genresID[fileGenre] = genresID[fileGenre] + 1 if fileGenre in genresID else 1
                 fileID = genresID[fileGenre]
-                newFilename = str(fileGenre)+"_"+str(fileID)
-                createSpectrogram(filename,newFilename)
-
+                if fileID <= 2000:
+                    newFilename = str(fileGenre)+"_"+str(fileID)
+                    createSpectrogram(filename,newFilename)
+                
+                
 #Whole pipeline .mp3 -> .png slices
 def createSlicesFromAudio():
 	print ("Creating spectrograms...")
