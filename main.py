@@ -18,6 +18,7 @@ from config import filesPerGenre
 from config import nbEpoch
 from config import validationRatio, testRatio
 from config import sliceSize
+from config import genreList
 
 from songToData import createSlicesFromAudio
 from audioFilesTools import isMono
@@ -54,8 +55,10 @@ genres = os.listdir(slicesPath)
 genres = [filename for filename in genres if os.path.isdir(slicesPath+filename)]
 nbClasses = len(genres)
 
-#Create model 
+#Create model
 model = createModel(nbClasses, sliceSize)
+#test_X, test_y = getDataset(filesPerGenre, genres, sliceSize, validationRatio, testRatio, mode="test")
+#validation_monitor = tf.contrib.learn.monitors.ValidationMonitor(test_X, test_y, every_n_steps=50)
 #model2 = createFCModel(nbClasses, sliceSize)
 
 if "train" in args.mode:
@@ -105,7 +108,7 @@ if "predict" in args.mode:
 	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
 	output, errors = p.communicate()
 	if errors:
-		print errors
+		print (errors)
 
 	newSpecPath = 'New_Spectrograms/'
 	#Create path if not existing
@@ -118,12 +121,12 @@ if "predict" in args.mode:
 
 	#create spectrogram from given file
 	userinput.replace(".mp3","")
-	print "Creating spectrogram for file {}".format(userinput)
+	print ("Creating spectrogram for file {}".format(userinput))
 	command = "sox '/tmp/{}.wav' -n spectrogram -Y 200 -X 50 -m -r -o '{}.png'".format(newFilename,newSpecPath+newFilename)
 	p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
 	output, errors = p.communicate()
 	if errors:
-		print errors
+		print (errors)
 
 	#Remove tmp mono track
 	os.remove("/tmp/{}.wav".format(newFilename))
@@ -150,7 +153,7 @@ if "predict" in args.mode:
 			
 			#For each sample
 			for i in range(nbSamples):
-				print "Creating slice: ", (i+1), "/", nbSamples, "for", newFilename
+				print ("Creating slice: ", (i+1), "/", nbSamples, "for", newFilename)
 				#Extract and save 128x128 sample
 				startPixel = i*desiredSize
 				imgTmp = img.crop((startPixel, 1, startPixel + desiredSize, desiredSize + 1))
@@ -164,7 +167,7 @@ if "predict" in args.mode:
 
 	for file in spect_files:
 		img_array = getImageData(file, sliceSize)
-		print file
+		print (file)
 		data.append(img_array)
 		os.remove(file) #remove slices
 
@@ -175,9 +178,9 @@ if "predict" in args.mode:
 	model.load('musicDNN.tflearn')
 	predictionSoftmax = model.predict(data)[0]
 	predictedIndex = max(enumerate(predictionSoftmax), key=lambda x:x[1])[0]
-	print predictionSoftmax,'\n'
+	print (predictionSoftmax,'\n')
 	
-	print "Prediction:", ["{0:.2f}".format(x) for x in predictionSoftmax], "->", predictedIndex
+	print ("Prediction:", ["{0:.2f}".format(x) for x in predictionSoftmax], "->", predictedIndex)
 	pGenre = genres[predictedIndex]
 	print("The genre is: %s" % pGenre)
 	
@@ -202,7 +205,7 @@ if "classify" in args.mode:
 
 	counter = 0
 
-	print "Creating Spectrogams"
+	print ("Creating Spectrogams")
 	#parse through all files in library and create spectrograms
 	for filename in os.listdir(predictionPath):
 		if filename.endswith(".mp3"):
@@ -216,7 +219,7 @@ if "classify" in args.mode:
 			p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
 			output, errors = p.communicate()
 			if errors:
-				print errors
+				print (errors)
 
 			#create spectrogram from given file
 			filename.replace(".mp3","")
@@ -225,7 +228,7 @@ if "classify" in args.mode:
 			p = Popen(command, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True, cwd=currentPath)
 			output, errors = p.communicate()
 			if errors:
-				print errors
+				print (errors)
 
 			#Remove tmp mono track
 			os.remove("/tmp/{}.wav".format(newFilename))
@@ -234,10 +237,10 @@ if "classify" in args.mode:
 	subdata = []
 	data = []
 
-	print "Spectrogams Created! ✅"
+	print ("Spectrogams Created! ✅")
 	#slice spectrograms
 	
-	print "Slicing Spectrogams"
+	print ("Slicing Spectrogams")
 	for newFilename in os.listdir(predictSpect):
 		if newFilename.endswith(".png"):
 			#slice
@@ -266,10 +269,10 @@ if "classify" in args.mode:
 			subdata = []
 
 
-	print "Slices Created! ✅"
+	print ("Slices Created! ✅")
 
 	model.load('musicDNN.tflearn')
-	print "Model loaded! ✅"
+	print ("Model loaded! ✅")
 	s = song()
 	lib = library()
 
@@ -277,7 +280,7 @@ if "classify" in args.mode:
 
 	#parse through super array predicting each one 
 	#and assign name to song object then append song object to songList in library
-	print "Predicting"
+	print ("Predicting")
 	for vec in data:
 		predictionSoftmax = model.predict(vec)[0]
 		predictedIndex = max(enumerate(predictionSoftmax), key=lambda x:x[1])[0]
@@ -287,10 +290,10 @@ if "classify" in args.mode:
 		lib.songList.append(s.vector)
 		lib.labels.append(s.genre)
 	
-	print lib.songList
-	print lib.labels
+	print (lib.songList)
+	print (lib.labels)
 
-	print "Performing knn"
+	print ("Performing knn")
 	dataSet = np.asarray(lib.songList, dtype=np.float32)
 	input = lib.songList[0]
 	k = 3
@@ -299,6 +302,6 @@ if "classify" in args.mode:
 	gbool = raw_input('next: ')
 
 	if gbool == "graph":
-		print "plotting"
+		print ("plotting")
 		#hyp.plot(dataSet, '.', reduce='TSNE', group=lib.labels, labels=lib.labels, ndims = 3)
 		hyp.plot(dataSet, '.', group=lib.labels)
