@@ -1,13 +1,14 @@
 import os
 from config import slicesPath
-
+from config import setBalance
 files = os.listdir(slicesPath)
 
+#TODO: change os.remove to move slices to new directory for possible later testing.
 for genre in files:
     newPath = slicesPath+genre+'/'
     i = 0
     for filename in os.listdir(newPath):
-        if i < (1000*11):
+        if i < (setBalance*11):
             newNametup = filename.split('_')
             names = newNametup[0]
         else:

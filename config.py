@@ -16,6 +16,7 @@ sliceSize = 128
 #Dataset parameters
 genreList = ["Pop", "Experimental", "Hip-Hop", "International", "Rock", "Instrumental", "Electronic", "Folk"]
 filesPerGenre = 5000
+setBalance = 1000
 validationRatio = 0.3
 testRatio = 0.1
 
