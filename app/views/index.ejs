@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+        <script src="js/audio.js" type="text/javascript"></script>
+        <script src="js/dragdrop.js" type="text/javascript"></script>
+        <title><%=title%></title>
+        <link rel="stylesheet" type="text/css" href="styles/styles.css">
+        <link rel="shortcut icon" href="">
+    </head>
+    <body>
+        <header class="">Macaron</header>
+        <div class="row">
+            <h5>Select a song to generate a similar playlist</h5>
+            <audio src="" controls id="player"></audio>
+            <div class="column">
+                <h2>Library</h2>
+                <!-- GET LIST OF SONGS -->
+                <ul id="lib">
+                    <% for(var i=0; i < libLen; i++) { %>
+                        <li data-draggable="item">
+                            <a href="<%=lib[i].paths%>" data-value="<%=i %>" 
+                                name="<%=lib[i].fileList.replace(".mp3","") %>">
+                            <%=lib[i].fileList.replace(".mp3","") %></a>
+                        </li>
+                    <% } %>
+                </ul>
+                <script> audioPlayer(); </script>
+            </div>
+            <div class="column">
+                <form action="/" method="POST">
+                    <div class="dropZone" data-draggable="target"><span id="dragText">Drop song here to generate playlist</span></div>
+                    <input type="text" id="target-song" name="target_song" hidden>
+                    <button type="submit">Generate</button>
+                </form>
+                <br><br><br><br>
+                <h2>Generated Playlist</h2>
+            </div>
+        </div>
+    </body>
+</html>

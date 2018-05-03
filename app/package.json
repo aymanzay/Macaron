@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@tensorflow/tfjs": "^0.9.1",
+    "@tensorflow/tfjs-converter": "^0.1.2",
+    "body-parser": "^1.18.2",
+    "pathlib": "^0.1.2",
+    "python-virtualenv": "0.0.4"
+  }
+}
